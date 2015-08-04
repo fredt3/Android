@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1.0"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:orientation="horizontal"
+    	android:layout_weight="0.20" >
+    	
+        <ToggleButton
+            android:id="@+id/buttonOpen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#555555"
+            android:gravity="center"
+            android:layout_margin="2dp"
+            android:text="Open"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+        
+        <ToggleButton
+            android:id="@+id/buttonEdit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#555555"
+            android:gravity="center"
+            android:layout_margin="2dp"
+            android:text="Edit"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+        
+        <ToggleButton
+            android:id="@+id/buttonVOID"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#555555"
+            android:gravity="center"
+            android:layout_margin="2dp"
+            android:text="VOID"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+        
+        <ToggleButton
+            android:id="@+id/buttonDel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.25"
+            android:background="#FF0000"
+            android:gravity="center"
+            android:layout_margin="2dp"
+            android:text="Del"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+        
+    </LinearLayout>
+<ListView 
+    android:layout_weight="0.8"
+        android:id="@+id/file_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
