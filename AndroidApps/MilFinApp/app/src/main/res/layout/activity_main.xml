@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="#89cff0">
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/welcome_msg"
+        android:textSize="20sp"
+        android:textColor="#000000"/>
+    <Button
+        android:id="@+id/buttonEarnings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#555555"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/welcome"
+        android:text="Earnings"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/buttonDeductions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonEarnings"
+        android:background="#555555"
+        android:layout_margin="10dp"
+        android:text="Deductions"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/buttonSavings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonDeductions"
+        android:background="#555555"
+
+        android:layout_margin="10dp"
+        android:text="Savings"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/buttonTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonSavings"
+        android:background="#555555"
+        android:layout_margin="10dp"
+        android:text="Tips"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/buttonPortfolio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonTips"
+        android:background="#FF0000"
+        android:layout_margin="10dp"
+        android:text="Portfolio"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+</RelativeLayout>

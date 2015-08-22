@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1.0"
+    >
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/welcome_msg"
+        android:textSize="20sp"
+        android:textColor="#000000"/>
+    <ListView
+        android:layout_weight="0.8"
+        android:id="@+id/profile_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/buttonPortfolio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonTips"
+        android:background="#555555"
+        android:layout_margin="10dp"
+        android:text="Create Profile"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+</LinearLayout>
