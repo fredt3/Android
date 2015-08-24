@@ -1,6 +1,8 @@
 package com.example.fred.milfinapp;
 
+import java.io.File;
 import java.io.Serializable;
+import java.util.Scanner;
 
 /**
  * Created by Fred on 8/20/2015.
@@ -9,13 +11,15 @@ public class Profile implements Serializable
 {
     private String name;
     private String rank;
-    private int years;
+    private String years;
     private int zipCode;
     private double BAH;
     private double BAS;
-    private boolean b_dependents;
+    private String b_dependents;
     private double dutyPay;
     private double otherIncome;
+
+    private double basePay;
 
     Profile()
     {
@@ -24,11 +28,11 @@ public class Profile implements Serializable
     Profile(String name)
     {
         rank = "";
-        years = -1;
+        years = "";
         zipCode = -1;
         BAH = -1;
         BAS = -1;
-        b_dependents = false;
+        b_dependents = "false";
         dutyPay = -1;
         otherIncome = -1;
         this.setName(name);
@@ -41,7 +45,7 @@ public class Profile implements Serializable
     {
         this.rank = rank;
     }
-    public void setYears(int years)
+    public void setYears(String years)
     {
         this.years = years;
     }
@@ -60,7 +64,7 @@ public class Profile implements Serializable
     {
         this.BAS = BAS;
     }
-    public void setB_dependents(boolean b_dependents)
+    public void setB_dependents(String b_dependents)
     {
         this.b_dependents = b_dependents;
     }
@@ -76,12 +80,11 @@ public class Profile implements Serializable
     public String getName() {
         return name;
     }
-
     public String getRank()
     {
         return rank;
     }
-    public int getYears()
+    public String getYears()
     {
         return years;
     }
@@ -91,13 +94,17 @@ public class Profile implements Serializable
     }
     public double getBAH()
     {
+        try {
+            Scanner in = new Scanner(new File("KeyWestTemp.txt"));
+            List<String> list = in.
+        } catch(Exception e){}
         return BAH;
     }
     public double getBAS()
     {
         return BAS;
     }
-    public boolean getB_dependents()
+    public String getB_dependents()
     {
         return b_dependents;
     }
@@ -110,6 +117,76 @@ public class Profile implements Serializable
         return otherIncome;
     }
 
+    public double getTax()
+    {
 
+        double taxRate = 0;
+        double taxedAllotments = basePay + getOtherIncome();
+
+        if(b_dependents.equals("true"))
+        {
+            if(taxedAllotments > 0 && taxedAllotments < 18150)
+            {
+               taxRate = 0.1;
+            }
+            else if(taxedAllotments > 18150 && taxedAllotments < 73800)
+            {
+                taxRate = 0.15;
+            }
+            else if(taxedAllotments > 73800 && taxedAllotments < 148850)
+            {
+                taxRate = 0.25;
+            }
+            else if(taxedAllotments > 148850 && taxedAllotments < 226850)
+            {
+                taxRate = 0.28;
+            }
+            else if(taxedAllotments > 226850 && taxedAllotments < 405100)
+            {
+                taxRate = 0.33;
+            }
+            else if(taxedAllotments > 405100 && taxedAllotments < 457600)
+            {
+                taxRate = 0.35;
+            }
+            else
+            {
+                taxRate = 0.396;
+            }
+        }
+        else
+        {
+            if(taxedAllotments > 0 && taxedAllotments < 9075)
+            {
+                taxRate = 0.1;
+            }
+            else if(taxedAllotments > 9075 && taxedAllotments < 36900)
+            {
+                taxRate = 0.15;
+            }
+            else if(taxedAllotments > 36900 && taxedAllotments < 89350)
+            {
+                taxRate = 0.25;
+            }
+            else if(taxedAllotments > 89350 && taxedAllotments < 186350)
+            {
+                taxRate = 0.28;
+            }
+            else if(taxedAllotments > 186350 && taxedAllotments < 405100)
+            {
+                taxRate = 0.33;
+            }
+            else if(taxedAllotments > 405100 && taxedAllotments < 406750)
+            {
+                taxRate = 0.35;
+            }
+            else
+            {
+                taxRate = 0.396;
+            }
+        }
+
+        return taxRate * taxedAllotments;
+    }
 
 }

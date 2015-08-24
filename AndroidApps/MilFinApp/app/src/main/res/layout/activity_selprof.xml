@@ -19,14 +19,23 @@
         android:id="@+id/profile_manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/buttonPortfolio"
+
+    <EditText
+        android:id="@+id/newProfileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonTips"
+        android:layout_margin="10dp"
+        android:text="Enter New Profile Name"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttonCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#555555"
         android:layout_margin="10dp"
         android:text="Create Profile"
         android:textColor="#FFFFFF"
         android:textSize="30sp" />
+
 </LinearLayout>

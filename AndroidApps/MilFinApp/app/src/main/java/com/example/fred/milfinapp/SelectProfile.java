@@ -3,6 +3,7 @@ package com.example.fred.milfinapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.internal.widget.AdapterViewCompat;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,25 +37,42 @@ import java.util.List;
 
 public class SelectProfile  extends Activity implements AdapterView.OnItemClickListener
 {
-    public Profile activeProfile;
+    File[] folders;// = dirFolder.listFiles();
     protected static String LOG_TAG = "Saving";
     boolean isOpen = true, isDel = false, isEdit = false;
-
+    String[] files;
+    ArrayAdapter listAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selprof);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        String[] files = fileList();
+        //File[] f =
+        files = fileList();
         String[] spinner_array = {"Open","Edit","Delete"};
         List<String> list = Arrays.asList(files);
 
         ListView fileManager = (ListView) findViewById(R.id.profile_manager);
 
-        ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
         fileManager.setAdapter(listAdapter);
         fileManager.setOnItemClickListener(this);
+        registerForContextMenu(fileManager);
+
+
+        final Button buttonCreate = (Button) findViewById(R.id.buttonCreate);
+        final EditText newProfName = (EditText)findViewById(R.id.newProfileName);
+
+        buttonCreate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Profile newProfile = new Profile(newProfName.getText().toString().trim());
+                SerializationUtil.saveObjectToFile(getBaseContext(), newProfile.getName(), newProfile);
+                finish();
+                startActivity(getIntent());
+            }
+        });
 
     }
 
@@ -64,29 +83,53 @@ public class SelectProfile  extends Activity implements AdapterView.OnItemClickL
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("profile", profileClicked);
         startActivity(intent);
+        finish();
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
+        if (v.getId()==R.id.profile_manager) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(files[info.position]);
+            String[] menuItems = getResources().getStringArray(R.array.menu_options);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()) {
-            case R.id.edit:
-                //editNote(info.id);
-                return true;
-            case R.id.delete:
-                //deleteNote(info.id);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.menu_options);
+        String menuItemName = menuItems[menuItemIndex];
+        String listItemName = files[info.position];
+
+        if(menuItemName.equals("Edit"))
+        {
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            intent.putExtra("profile", listItemName);
+            startActivity(intent);
+            finish();
         }
+        else if(menuItemName.equals("Delete"))
+        {
+
+            deleteFile(listItemName);
+
+            finish();
+            startActivity(getIntent());
+        }
+        else {
+            Intent intent = new Intent(getBaseContext(), Portfolio.class);
+            intent.putExtra("profile", listItemName);
+            startActivity(intent);
+            finish();
+        }
+
+        return true;
     }
 
     @Override
@@ -106,52 +149,6 @@ public class SelectProfile  extends Activity implements AdapterView.OnItemClickL
         return super.onOptionsItemSelected(item);
     }
 
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
-    }
 
-    public static void saveObjectToFile(Context context, String fileName, Profile obj) {
-        try {
-            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(obj);
-            oos.close();
 
-        } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, "saveObjectToFile FileNotFoundException: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "saveObjectToFile IOException: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "saveObjectToFile Exception: " + e.getMessage());
-        }
-    }
-    public static Profile getObjectFromFile(Context context, String filename) {
-
-        try {
-            FileInputStream fis = context.openFileInput(filename);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-
-            Profile object = (Profile) ois.readObject();
-            ois.close();
-            fis.close();
-
-            return object;
-
-        } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, "getObjectFromFile FileNotFoundException: " + e.getMessage());
-            saveObjectToFile(context, "CounterInfo.txt", new Profile());
-            return null;
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "getObjectFromFile IOException: " + e.getMessage());
-            return null;
-        } catch (ClassNotFoundException e) {
-            Log.e(LOG_TAG, "getObjectFromFile ClassNotFoundException: " + e.getMessage());
-            return null;
-        } catch (Exception e) {// Catch exception if any
-            Log.e(LOG_TAG, "getBookmarksFromFile Exception: " + e.getMessage());
-            return null;
-        }
-    }
 }

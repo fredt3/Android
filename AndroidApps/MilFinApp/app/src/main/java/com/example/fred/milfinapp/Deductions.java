@@ -11,8 +11,10 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,16 +24,20 @@ import java.util.List;
 
 public class Deductions  extends Activity
 {
-
+    Profile activeProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deductions);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        activeProfile = SerializationUtil.getObjectFromFile(getBaseContext(), getIntent().getStringExtra("profile"));
+
+
+        final TextView tax = (TextView) findViewById(R.id.tax);
+        tax.setText(String.valueOf(activeProfile.getTax()));
 
         final Button buttonProceed = (Button) findViewById(R.id.btnProceed);
-
         buttonProceed.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

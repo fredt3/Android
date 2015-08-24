@@ -3,6 +3,8 @@
     <string name="welcome_msg">Welcome to M.F.A! We
     here to meet your financial needs. To get started,
     please click on your Profile or create one!</string>
+    <string name="edit_msg">Use the buttons below to modify
+    your profile, click on Portfolio to check out your info!</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="rank_prompt">Choose Rank</string>
@@ -25,5 +27,10 @@
         <item>O-7</item>
         <item>O-8</item>
         <item>O-9</item>
+    </string-array>
+    <string-array name="menu_options">
+        <item>Open</item>
+        <item>Edit</item>
+        <item>Delete</item>
     </string-array>
 </resources>

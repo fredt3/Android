@@ -11,6 +11,7 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,33 +23,37 @@ import java.util.List;
 
 public class Earnings  extends Activity
 {
-
+    Profile activeProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earnings);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        activeProfile = SerializationUtil.getObjectFromFile(getBaseContext(), getIntent().getStringExtra("profile"));
+
         String [] ranks = {"Choose Rank", "E-1", "E-2", "E-3", "E-4", "E-5","E-6","E-7","E-8",
                 "E-9","W-2","W-3","W-4","W-5","O-1E","O-2E","O-3E","O-1","O-2","O-3","O-4","0-5","0-6","0-7","0-8","O-9", "O-10"};
-        Spinner spinnerRank = (Spinner) findViewById(R.id.spinnerRank);
+        final Spinner spinnerRank = (Spinner) findViewById(R.id.spinnerRank);
         List rankList =
                 Arrays.asList(ranks);
         spinnerRank.setAdapter(
                 new ArrayAdapter(this,
                         android.R.layout.simple_list_item_1, rankList));
 
-
+        final EditText zipcode = (EditText) findViewById(R.id.zipCode);
+        final EditText dutypay = (EditText) findViewById(R.id.extraDutyPay);
+        final EditText otherincome = (EditText) findViewById(R.id.otherIncome);
 
         ArrayList years = new ArrayList();
         years.add("Choose # of Years");
         for(int i = 1; i < 38; i++)
         {
-            years.add(i);
+            years.add(String.valueOf(i));
         }
         years.add("38+");
 
-        Spinner spinnerYears = (Spinner) findViewById(R.id.spinnerYears);
+        final Spinner spinnerYears = (Spinner) findViewById(R.id.spinnerYears);
         List yearList =
                 Arrays.asList(years);
         spinnerYears.setAdapter(
@@ -59,7 +64,7 @@ public class Earnings  extends Activity
 
         String [] yesNo = {"Yes/No","Yes","No"};
 
-        Spinner spinnerDependents = (Spinner) findViewById(R.id.spinnerDep);
+        final Spinner spinnerDependents = (Spinner) findViewById(R.id.spinnerDep);
         List depList =
                 Arrays.asList(yesNo);
         spinnerDependents.setAdapter(
@@ -68,13 +73,44 @@ public class Earnings  extends Activity
 
 
         final Button buttonProceed = (Button) findViewById(R.id.btnProceed);
+        final Button buttonPortfolio = (Button) findViewById(R.id.btnPortfolio);
 
         buttonProceed.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), " =)", Toast.LENGTH_LONG).show();
+
+                activeProfile.setRank(spinnerRank.getSelectedItem().toString());
+                activeProfile.setYears(spinnerYears.getSelectedItem().toString());
+                activeProfile.setZipCode(Integer.parseInt(zipcode.getText().toString()));
+                activeProfile.setB_dependents(spinnerDependents.getSelectedItem().toString());
+                activeProfile.setDutyPay(Double.parseDouble(dutypay.getText().toString()));
+                activeProfile.setOtherIncome(Double.parseDouble(otherincome.getText().toString()));
+
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+
                 Intent i = new Intent(getBaseContext(), Deductions.class);
+                i.putExtra("profile", activeProfile.getName());
                 startActivity(i);
+                finish();
+            }
+        });
+
+        buttonPortfolio.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                activeProfile.setRank(spinnerRank.getSelectedItem().toString());
+                activeProfile.setYears(spinnerYears.getSelectedItem().toString());
+                activeProfile.setZipCode(Integer.parseInt(zipcode.getText().toString()));
+                activeProfile.setB_dependents(spinnerDependents.getSelectedItem().toString());
+                activeProfile.setDutyPay(Double.parseDouble(dutypay.getText().toString()));
+                activeProfile.setOtherIncome(Double.parseDouble(otherincome.getText().toString()));
+
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+
+                Intent i = new Intent(getBaseContext(), Portfolio.class);
+                i.putExtra("profile", activeProfile.getName());
+                startActivity(i);
+                finish();
             }
         });
     }
@@ -99,13 +135,5 @@ public class Earnings  extends Activity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public String [] initBAHlocations()
-    {
-        String [] loc = {"empty"};
-
-
-        return loc;
     }
 }

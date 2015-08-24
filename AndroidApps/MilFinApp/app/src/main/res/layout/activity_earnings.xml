@@ -141,4 +141,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.25" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25" />
+
+        <Button
+            android:id="@+id/btnPortfolio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.375"
+            android:text="Go to Portfolio >>" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25" />
+    </LinearLayout>
 </LinearLayout>

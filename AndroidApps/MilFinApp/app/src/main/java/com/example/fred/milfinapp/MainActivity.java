@@ -39,7 +39,7 @@ public class MainActivity  extends Activity
         //activeProfile.setRank("Admiral");
 
         //saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
-        activeProfile = getObjectFromFile(getBaseContext(), getIntent().getStringExtra("profile"));
+        activeProfile = SerializationUtil.getObjectFromFile(getBaseContext(), getIntent().getStringExtra("profile"));
         Toast.makeText(getApplicationContext(), activeProfile.getName(), Toast.LENGTH_LONG).show();
 
         final Button buttonEarn = (Button) findViewById(R.id.buttonEarnings);
@@ -51,42 +51,52 @@ public class MainActivity  extends Activity
         buttonEarn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
                 Toast.makeText(getApplicationContext(), " =)", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getBaseContext(), Earnings.class);
+                i.putExtra("profile", activeProfile.getName());
                 startActivity(i);
+                finish();
             }
         });
         buttonDed.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
                 Intent i = new Intent(getBaseContext(), Deductions.class);
+                i.putExtra("profile", activeProfile.getName());
                 startActivity(i);
+                finish();
             }
         });
         buttonSav.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
                 Intent i = new Intent(getBaseContext(), Savings.class);
+                i.putExtra("profile", activeProfile.getName());
                 startActivity(i);
+                finish();
             }
         });
         buttonTip.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
                 Intent i = new Intent(getBaseContext(), Tips.class);
+                i.putExtra("profile", activeProfile.getName());
                 startActivity(i);
+                finish();
             }
         });
         buttonSet.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
+                SerializationUtil.saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
                 Intent i = new Intent(getBaseContext(), Portfolio.class);
+                i.putExtra("profile", activeProfile.getName());
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -111,55 +121,5 @@ public class MainActivity  extends Activity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        saveObjectToFile(getBaseContext(), activeProfile.getName(), activeProfile);
-
-    }
-
-    public static void saveObjectToFile(Context context, String fileName, Profile obj) {
-        try {
-            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(obj);
-            oos.close();
-
-        } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, "saveObjectToFile FileNotFoundException: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "saveObjectToFile IOException: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "saveObjectToFile Exception: " + e.getMessage());
-        }
-    }
-    public static Profile getObjectFromFile(Context context, String filename) {
-
-        try {
-            FileInputStream fis = context.openFileInput(filename);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-
-            Profile object = (Profile) ois.readObject();
-            ois.close();
-            fis.close();
-
-            return object;
-
-        } catch (FileNotFoundException e) {
-            Log.e(LOG_TAG, "getObjectFromFile FileNotFoundException: " + e.getMessage());
-            saveObjectToFile(context, "CounterInfo.txt", new Profile());
-            return null;
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "getObjectFromFile IOException: " + e.getMessage());
-            return null;
-        } catch (ClassNotFoundException e) {
-            Log.e(LOG_TAG, "getObjectFromFile ClassNotFoundException: " + e.getMessage());
-            return null;
-        } catch (Exception e) {// Catch exception if any
-            Log.e(LOG_TAG, "getBookmarksFromFile Exception: " + e.getMessage());
-            return null;
-        }
     }
 }
